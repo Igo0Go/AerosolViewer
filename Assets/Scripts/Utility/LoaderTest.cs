@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -27,8 +28,23 @@ public class LoaderTest : MonoBehaviour
 
         if(result.success)
         {
-            loadedText.text = result.fileText;
             loadStateString.text = result.filePath;
+            List<AerosolParticle> particles = ParsingUtility.ParceFromString(result.fileText);
+
+            for (int i = 0; i < particles.Count; i++)
+            {
+                AerosolParticle particle = particles[i];
+                loadedText.text += "Частица " + (i+1) + "\n";
+                loadedText.text += "Позиция: (" + particle.X + "; " + particle.Y + "; " + particle.Z + ")\n";
+                loadedText.text += "Радиус = " + particle.radius + "\n";
+                loadedText.text += "Ns = " + particle.Ns;
+                loadedText.text += "; Nt = " + particle.Nt;
+                loadedText.text += "; a = " + particle.a + "\n";
+                if(i < particles.Count - 1)
+                {
+                    loadedText.text += "-----------------\n";
+                }
+            }
         }
         else
         {
