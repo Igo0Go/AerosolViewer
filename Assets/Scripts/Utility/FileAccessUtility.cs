@@ -1,21 +1,43 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
 public static class FileAccessUtility
 {
-    private static string defaultPath;
+    public static string DefaultPath { get; private set; }
 
     static FileAccessUtility()
     {
-        defaultPath = Application.persistentDataPath;
+        DefaultPath = Application.persistentDataPath;
     }
 
-    public static string GetDataFromFile()
+    public static FileAccessResult GetDataFromFile()
     {
-        defaultPath = FileDialog.OpenFilePanel("Поиск файла", defaultPath, ".txt");
+        FileAccessResult result = new FileAccessResult();
 
-        return File.ReadAllText(defaultPath);
+        string path = FileDialog.OpenFilePanel("Поиск файла", DefaultPath, "txt");
+
+        result.filePath = path;
+
+        if(string.IsNullOrEmpty(path))
+        {
+            result.success = false;
+            result.errorText = "Пустой путь";
+        }
+        else
+        {
+            result.success = true;
+            DefaultPath = path;
+            result.fileText = File.ReadAllText(DefaultPath);
+        }
+
+        return result;
     }
+}
+
+public class FileAccessResult
+{
+    public bool success;
+    public string filePath;
+    public string fileText;
+    public string errorText;
 }
