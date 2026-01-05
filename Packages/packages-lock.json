@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.ninesun.openfiledialogwin": {
+      "version": "https://github.com/isNineSun/Unity-Open-Filedialog-in-Windows.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "ed997a2910d70126e54057100a61921db098ac3d"
+    },
     "com.unity.collab-proxy": {
       "version": "2.7.1",
       "depth": 0,
