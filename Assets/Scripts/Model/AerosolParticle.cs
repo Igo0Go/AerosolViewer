@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class AerosolParticle
 {
+    public event Action<AerosolParticle> Selected;
+
     public float X;
     public float Y;
     public float Z;
@@ -14,5 +17,10 @@ public class AerosolParticle
     public Vector3 GetTransformPosition()
     {
         return new Vector3(X, Z, Y);
+    }
+
+    public void SelectParticle()
+    {
+        Selected?.Invoke(this);
     }
 }
