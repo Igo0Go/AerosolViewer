@@ -25,9 +25,23 @@ public static class FileAccessUtility
         }
         else
         {
-            result.success = true;
-            DefaultPath = path;
-            result.fileText = File.ReadAllText(DefaultPath);
+            string fileData = File.ReadAllText(path);
+
+            if(ParsingUtility.CheckFileStringFormat(fileData, out string message))
+            {
+                result.success = true;
+                DefaultPath = path;
+                result.fileText = fileData;
+            }
+            else
+            {
+                result.success = false;
+                DefaultPath = path;
+                result.fileText = string.Empty;
+                result.errorText = message;
+            }
+
+
         }
 
         return result;

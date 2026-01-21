@@ -6,17 +6,47 @@ public static class ParsingUtility
     private const string itemSeparator = "\r\n";
     private const string attributeSeparator = " ";
 
+    public static bool CheckFileStringFormat(string data, out string resultMessage)
+    {
+        string[] strings;
+        resultMessage = string.Empty;
+
+        try
+        {
+            strings = GetAttributeStrings(data);
+        }
+        catch
+        {
+            resultMessage = "Неверный формат файла";
+            return false;
+        }
+
+        foreach (string s in strings)
+        {
+            string[] attributes = s.Split(attributeSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string a in attributes)
+            {
+                if (!float.TryParse(a, out float result))
+                {
+                    resultMessage = "Неверный формат файла";
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public static List<AerosolParticle> ParceFromString(string data)
     {
-        string[] strings = data.Split(beginningSeparator, System.StringSplitOptions.RemoveEmptyEntries);
-        data = strings[strings.Length - 1];
-        strings = data.Split(itemSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+        string[] strings = GetAttributeStrings(data);
 
         List<AerosolParticle> particles = new List<AerosolParticle>();
 
         foreach (string s in strings)
         {
             string[] attributes = s.Split(attributeSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+
             AerosolParticle particle = new AerosolParticle();
             particle.Ns = float.Parse(attributes[0]);
             particle.Nt = float.Parse(attributes[1]);
@@ -29,5 +59,12 @@ public static class ParsingUtility
         }
 
         return particles;
+    }
+
+    private static string[] GetAttributeStrings(string data)
+    {
+        string[] strings = data.Split(beginningSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+        data = strings[strings.Length - 1];
+        return data.Split(itemSeparator, System.StringSplitOptions.RemoveEmptyEntries);
     }
 }
