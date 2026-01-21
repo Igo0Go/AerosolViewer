@@ -26,6 +26,7 @@ public class ClusterCamera : MonoBehaviour
         }
 
         localRotation += new Vector3(-mouseY, mouseX, 0) * speed;
+        localRotation.x = Mathf.Clamp(localRotation.x, -90, 90);
         transform.localRotation = Quaternion.Euler(localRotation);
     }
 }
