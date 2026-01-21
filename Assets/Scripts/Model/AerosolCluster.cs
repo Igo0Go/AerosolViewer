@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class AerosolCluster : MonoBehaviour
+public class AerosolCluster
 {
     public List<AerosolParticle> Particles
     {
@@ -18,15 +17,26 @@ public class AerosolCluster : MonoBehaviour
     }
     private List<AerosolParticle> _particles;
 
-    public event Action<AerosolParticle> NewParticleSelected;
     public event Action<List<AerosolParticle>> ParticlesChanged;
 
     public void SetNewParticlesForCluster(List<AerosolParticle> particles)
     {
         Particles = particles;
+
         foreach (var particle in Particles)
         {
-            particle.Selected += (p) => NewParticleSelected?.Invoke(p);
+            particle.Selected += (p) => OnSelectNewParticle(p);
+        }
+    }
+
+    private void OnSelectNewParticle(AerosolParticle particle)
+    {
+        foreach (var p in Particles)
+        {
+            if(particle != p)
+            {
+                p.DeselectParticle();
+            }
         }
     }
 }

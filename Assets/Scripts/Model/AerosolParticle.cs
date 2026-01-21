@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class AerosolParticle
 {
+    public event Action<bool> SelectedChanged;
     public event Action<AerosolParticle> Selected;
 
     public float X;
@@ -14,6 +15,8 @@ public class AerosolParticle
     public float Nt;
     public float a;
 
+    private bool selectedValue = false;
+
     public Vector3 GetTransformPosition()
     {
         return new Vector3(X, Z, Y);
@@ -21,6 +24,13 @@ public class AerosolParticle
 
     public void SelectParticle()
     {
+        selectedValue = true;
+        SelectedChanged?.Invoke(selectedValue);
         Selected?.Invoke(this);
+    }
+    public void DeselectParticle()
+    {
+        selectedValue = false;
+        SelectedChanged?.Invoke(selectedValue);
     }
 }

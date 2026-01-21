@@ -19,15 +19,26 @@ public class AerosolParticleComponent : MonoBehaviour
         transform.localPosition = data.GetTransformPosition();
         transform.localScale = Vector3.one * data.radius;
         Selected += data.SelectParticle;
-        data.Selected += (p) => Select();
+        data.SelectedChanged += OnSelectedChanged;
         Deselect();
     }
 
-    public void Select()
+    private void OnSelectedChanged(bool value)
+    {
+        if(value)
+        {
+            Select();
+        }
+        else
+        {
+            Deselect();
+        }
+    }
+    private void Select()
     {
         m_Renderer.material.color = Color.red;
     }
-    public void Deselect()
+    private void Deselect()
     {
         m_Renderer.material.color = Color.white;
     }

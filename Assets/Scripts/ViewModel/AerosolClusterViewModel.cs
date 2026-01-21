@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AerosolClusterViewModel : MonoBehaviour
 {
-    public event Action<AerosolParticle> NewParticleSelected;
     public event Action<FileAccessResult> FileLoadFinalled;
 
     private AerosolCluster model;
@@ -12,7 +10,6 @@ public class AerosolClusterViewModel : MonoBehaviour
     public void Init(AerosolClusterComponent aerosolClusterComponent)
     {
         model = new AerosolCluster();
-        model.NewParticleSelected += (p) => NewParticleSelected?.Invoke(p);
         model.ParticlesChanged += aerosolClusterComponent.UpdateCluster;
     }
 
